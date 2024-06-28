@@ -141,6 +141,7 @@ public class JDAImpl implements JDA
     protected final Condition statusCondition = statusLock.newCondition();
     protected final AtomicBoolean requesterShutdown = new AtomicBoolean(false);
     protected final AtomicReference<ShutdownEvent> shutdownEvent = new AtomicReference<>(null);
+    protected boolean phoneMode = false;
 
     public JDAImpl(AuthorizationConfig authConfig)
     {
@@ -1353,5 +1354,17 @@ public class JDAImpl implements JDA
     public ScheduledExecutorService getAudioLifeCyclePool()
     {
         return threadConfig.getAudioPool(this::getIdentifierString);
+    }
+
+
+    public boolean isPhoneMode()
+    {
+        return phoneMode;
+    }
+
+    public JDAImpl setPhoneMode(boolean phoneMode)
+    {
+        this.phoneMode = phoneMode;
+        return this;
     }
 }
