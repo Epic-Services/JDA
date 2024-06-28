@@ -99,6 +99,7 @@ public class JDABuilder
     protected MemberCachePolicy memberCachePolicy = MemberCachePolicy.ALL;
     protected GatewayEncoding encoding = GatewayEncoding.JSON;
     protected RestConfig restConfig = new RestConfig();
+    protected boolean phoneMode = false;
 
     private JDABuilder(@Nullable String token, int intents)
     {
@@ -1863,6 +1864,21 @@ public class JDABuilder
     }
 
     /**
+     * For OnlineStatus "Phone", set this to true.
+     *
+     * <p>Default: false
+     *
+     * @param phoneMode
+     * @return The JDABuilder instance. Useful for chaining.
+     */
+    public JDABuilder setPhoneMode(boolean phoneMode)
+    {
+        this.phoneMode = phoneMode;
+        return this;
+    }
+
+
+    /**
      * Builds a new {@link net.dv8tion.jda.api.JDA} instance and uses the provided token to start the login process.
      * <br>The login process runs in a different thread, so while this will return immediately, {@link net.dv8tion.jda.api.JDA} has not
      * finished loading, thus many {@link net.dv8tion.jda.api.JDA} methods have the chance to return incorrect information.
@@ -1934,6 +1950,7 @@ public class JDABuilder
                 .setCacheActivity(activity)
                 .setCacheIdle(idle)
                 .setCacheStatus(status);
+        jda.setPhoneMode(phoneMode);
         jda.login(shardInfo, compression, true, intents, encoding);
         return jda;
     }
