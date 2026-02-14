@@ -101,6 +101,7 @@ public class JDABuilder {
     protected GatewayEncoding encoding = GatewayEncoding.JSON;
     protected RestConfig restConfig = new RestConfig();
     protected AudioModuleConfig audioModuleConfig = null;
+    protected boolean showAsPhone = false;
 
     protected JDABuilder(@Nullable String token, int intents) {
         this.token = token;
@@ -1715,6 +1716,33 @@ public class JDABuilder {
     }
 
     /**
+     * Whether this client should be displayed as "on mobile" (phone indicator) where supported.
+     *
+     * <p><b>Default:</b> {@code false}
+     *
+     * <p><b>Note:</b> This is an optional/experimental flag and may be ignored by Discord or not be available
+     * on all platforms. Changing this only affects the presence shown by the official clients and does not
+     * change any JDA features.
+     *
+     * @param  showAsPhone
+     *         True to request the phone indicator ("mobile"), false otherwise
+     */
+    public void setShowAsPhone(boolean showAsPhone) {
+        this.showAsPhone = showAsPhone;
+    }
+
+    /**
+     * Whether this client is configured to be displayed as "on mobile" (phone indicator) where supported.
+     *
+     * <p><b>Default:</b> {@code false}
+     *
+     * @return True if {@link #setShowAsPhone(boolean)} was set to {@code true}
+     */
+    public boolean isShowAsPhone() {
+        return showAsPhone;
+    }
+
+    /**
      * Builds a new {@link net.dv8tion.jda.api.JDA} instance and uses the provided token to start the login process.
      * <br>The login process runs in a different thread, so while this will return immediately, {@link net.dv8tion.jda.api.JDA} has not
      * finished loading, thus many {@link net.dv8tion.jda.api.JDA} methods have the chance to return incorrect information.
@@ -1790,6 +1818,7 @@ public class JDABuilder {
                 .setCacheActivity(activity)
                 .setCacheIdle(idle)
                 .setCacheStatus(status);
+        jda.setShowAsPhone(showAsPhone);
         jda.login(shardInfo, compression, true, intents, encoding);
         return jda;
     }
